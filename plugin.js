@@ -30,10 +30,13 @@ function run() {
     claim: inputs.statement,
     rating: 'Unknown',
     title: '',
-    source: ''
+    source: '',
+    allRatings: {},
+    overallRating: ''
   }
   if (data && data.claims) {
     let originalClaimMatched = false
+    let maxRatingCount = 1;
     data.claims.forEach((claim) => {
       // Use the top review unless a better matching claim is found on the first page
       let claimMatched = (claim.text.toLowerCase().replace(/[^\w ]/, '') === statement.toLowerCase())
@@ -42,8 +45,22 @@ function run() {
         result.rating = claim.claimReview[0].textualRating
         result.title = claim.claimReview[0].title
         result.source = claim.claimReview[0].url
+        result.overallRating = result.rating
         originalClaimMatched = claimMatched
       }
+
+      claim.claimReview.forEach((review) => {
+        const rating = review.textualRating
+        if (result.allRatings[rating]) {
+          result.allRatings[rating]++
+          if (result.allRatings[rating] > maxRatingCount) {
+            maxRatingCount = result.allRatings[rating]
+            result.overallRating = rating;
+          }
+        } else {
+          result.allRatings[rating] = 1;
+        }
+      })
     })
   }
 
@@ -52,3 +69,4 @@ function run() {
 }
 
 module.exports = { run }
+
