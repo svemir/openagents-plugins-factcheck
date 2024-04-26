@@ -25,7 +25,11 @@ This plugin checks a given statement with [Google Fact Check Tools](https://tool
 Response to the above may be (formatted for easier reading)
 ```json
 {
+   "allRatings" : [
+      "Mixture"
+   ],
    "claim" : "Tomatoes are officially considered fruits in the U.S.",
+   "overallRating" : "Mixture",
    "rating" : "Mixture",
    "source" : "https://www.snopes.com/fact-check/tomatoes-fruits-vegetables/",
    "title" : "Are Tomatoes Fruits or Vegetables?"
